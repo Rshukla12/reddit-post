@@ -1,0 +1,46 @@
+#container {
+    padding: 0.5%;
+    border-radius: 10px;
+    background-color: #e3e3e3;
+}
+.post {
+    margin: 1% 0%;
+    padding: 0.5% 2%;
+    border-left: 5px solid black;
+}
+.reply {
+    display: none;
+    border-left: 5px solid black;
+    margin: 0.5% 1%;
+}
+.reply > div {
+    padding: 1% 4%;
+}
+.reply-box {
+    display: none;
+}
+.details {
+    display: flex;
+    gap: 1%;
+    margin: 0% !important;
+}
+.details > h5 {
+    font-size: 20px;
+    margin: 0.5% 0%;
+}
+h3 {
+    margin: 0.2% 0%;
+    line-height: 30px;
+    font-size: 30px;
+}
+button {
+    background-color: inherit;
+    border: none;
+    color: #838383;
+    font-size: 18px;
+    font-weight: 600;
+}
+.new-reply:hover {
+    color: black;
+    cursor: pointer;
+}
