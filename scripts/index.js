@@ -1,36 +1,3 @@
-const data = {
-  id: "001",
-  author: "albert",
-  body: "Whats the status?",
-  timestamp: "Sun Aug 02 2020 18:08:45 GMT+0530",
-  points: "2",
-  replies: [
-    {
-      id: "003",
-      author: "haren",
-      body: "Wrote the test suites, waiting for approval?",
-      timestamp: "Sun Aug 02 2020 18:12:45 GMT+0530",
-      points: "3",
-      replies: [
-        {
-          id: "004",
-          author: "albert",
-          body: "Thanks for the update!",
-          timestamp: "Sun Aug 02 2020 18:15:45 GMT+0530",
-          points: "8",
-        },
-      ],
-    },
-    {
-      id: "002",
-      author: "Nrupul",
-      body: "looking forward for the demo!",
-      timestamp: "Sun Aug 02 2020 18:10:45 GMT+0530",
-      points: "2",
-    },
-  ],
-};
-
 function createBtns(){
   const reply = document.createElement("button");
   const giveAward = document.createElement("button");
@@ -65,7 +32,6 @@ function createMeta(post){
   return meta;
 }
 
-
 function renderPost(post) {
   const div = document.createElement("div");
   
@@ -78,10 +44,17 @@ function renderPost(post) {
 
   btns.append(...createBtns());
 
+  const replyCont = document.createElement("div");
   const newReply = document.createElement("input");
-  newReply.className = "reply-box";
+  const replyBtn = document.createElement("button");
+  
+  replyBtn.textContent = "Comment"
+  
+  replyBtn.className = "reply-btn";
+  replyCont.className = "reply-box";
+  replyCont.append( newReply, replyBtn );
 
-  const arr = [meta, title, btns, newReply];
+  const arr = [meta, title, btns, replyCont];
 
   if ( post.replies?.length > 0 ) {
     const replies = document.createElement("div");
@@ -96,12 +69,16 @@ function renderPost(post) {
   return div;
 }
 
-function handleLoad() {
+function handleClick() {
   try {
     if ( event.target.textContent == "Reply" ){
       const tar = event.target.parentNode.parentNode.querySelector(".reply-box");
       tar.style.display = tar.style.display == "block" ? "none" : "block";
+      
       // console.log(event.target.parentNode.parentNode)
+    } else if ( event.target.className == "reply-btn" ){
+      // handle new event;
+
     } else if ( event.target.className == "replies" ) {
       console.log(event.target)
       const tar = event.target.querySelector(".reply");
@@ -115,10 +92,27 @@ function handleLoad() {
   } 
 }
 
+function fetchData(){
+  return fetch('http://localhost:3000/posts')
+    .then( res => res.json())
+    .catch( err => console.log(err))
+}
+
+async function handleData(){
+  try {
+    const target = document.getElementById("container");
+    const data = await fetchData();
+    const post = renderPost(data);
+    post.className = "post";
+    target.append(post);
+
+  } catch ( err ){
+    console.log(err);
+  }
+
+}
+
 window.addEventListener("load", () => {
-  const target = document.getElementById("container");
-  const post = renderPost(data);
-  post.className = "post";
-  target.append(post);
-  target.addEventListener("click", handleLoad);
+  handleData();
+  document.body.addEventListener("click", handleClick);
 });
