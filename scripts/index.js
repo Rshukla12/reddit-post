@@ -60,12 +60,34 @@ function createMeta(post){
 
   author.textContent = post.author;
   points.textContent = post.points + " Points";
-  time.textContent = post.timestamp;
+  time.textContent = timeConverter( post.timestamp );
 
   meta.className = "details";
 
   meta.append( author, points, time );
   return meta;
+}
+
+function timeConverter(postTime){
+  let time = (new Date() - new Date(postTime) ) / 1000 ;
+  if ( time < 60 ){
+    return " few seconds ago";
+  } else if ( time < 3600 ){
+    time = Math.floor(time/60);
+    return ` ${time} minutes ago`;
+  } else if ( time < 86400 ){
+    time = Math.floor(time/3600);
+    return ` ${time} hours ago`;
+  } else if ( time < 2592000 ){
+    time = Math.floor( time / 86400 );
+    return ` ${time} days ago`;
+  } else if ( time < 31536000 ){
+    time = Math.floor( time / 2592000 );
+    return ` ${time} days ago`;
+  } else {
+    time = Math.floor( time / 31536000 );
+    return ` ${time} years ago`;
+  }
 }
 
 async function renderPost(post) {
